@@ -1,4 +1,82 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="Author" content="Alejandro Castro Valero">
+	<meta name="Author" content="Alejandro Chica Gutiérrez">
+	<meta name="description" content="Front-End Proyecto Frigorífico">
+	<meta name="keywords" content="frigorifico, interfaz, usabilidad, accesibilidad">
+	<script src="https://kit.fontawesome.com/e411565dbb.js" crossorigin="anonymous"></script>
+	<title>Interfaz de Frigorífico</title>
+</head>
+<body>
+	<header>
+		<p>
+			<time datetime="1914-12-20">Martes, 20 de Diciembre</time>
+			<time datetime="08:30">08:30 AM</time>
+		</p>
+	</header>
+	<main>
+		<nav>
+			<ul>
+				<li>
+					<p>
+						<img src="Assets/fridge.png" alt="Icono refrigerador">
+						<img src="Assets/arrow.png" alt="Icono flecha bidireccional">
+						<img src="Assets/snowflake.png" alt="Icono copo de nieve">
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="Assets/fridge.png" alt="Icono refrigerador">
+						<label>Refrigerador</label>
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="Assets/shopping-cart.png" alt="Icono pedido">
+						<label>Pedido</label>
+					</p>
+				</li>
+			</ul>
+		</nav>
+		<div>
+			<p>
+				<output>+4</output>
+			</p>
+		</div>
+		<nav>
+			<ul>
+				<li>
+					<p>
+						<img src="Assets/plus.png" alt="Icono signo más">
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="Assets/minus.png" alt="Icono signo menos">
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="Assets/settings.png" alt="Icono preferencias">
+						<label>Preferencias</label>
+					</p>
+				</li>
+			</ul>
+		</nav>
+	</main>
+	<footer>
+
+	</footer>
+</body>
+</html>
+
+
+<!--
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -8,21 +86,22 @@
 </head>
 
 <body>
-	<button onclick="encenderLuzRefrigerador()">Encender luz refrigerador</button>
-	<button onclick="apagarLuzRefrigerador()">Apagar luz refrigerador</button>
+	<button onclick="encenderLuzRefrigerador();">Encender luz refrigerador</button>
+	<button onclick="apagarLuzRefrigerador();">Apagar luz refrigerador</button>
 	<script>
 		var frigo = new Electro();
-		frigo.on("connect", function () {
-			console.log("Ya estoy conectado con el frigorifico!!!")
-			console.log("Con este hay " + frigo.clientes + " clientes conectados");
 
-			function encenderLuzRefrigerador() {
+		function encenderLuzRefrigerador() {
 				frigo.refrigeradorLuz = true;
 			}
 
 			function apagarLuzRefrigerador() {
 				frigo.refrigeradorLuz = false;
 			}
+
+		frigo.on("connect", function () {
+			console.log("Ya estoy conectado con el frigorifico!!!")
+			console.log("Con este hay " + frigo.clientes + " clientes conectados");
 
 			// Activar la luz del refrigerador cuando se abre la puerta
 			frigo.on("refrigeradorPuerta", function (abierta) {
@@ -33,4 +112,4 @@
 	</script>
 </body>
 
-</html>
+</html>-->
