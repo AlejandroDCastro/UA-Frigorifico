@@ -1,15 +1,34 @@
 
+/*VARIABLES*/
 :root {
     --background-color: #181818;
     --border-color: #0f0f0f;
 }
-
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+
+
+/*CLASES*/
+.activado {
+    opacity: 1.0;
+}
+
+.desactivado {
+    opacity: 0.2;
+}
+
+
+/*FUENTE DIGITAL*/
+@font-face {
+    font-family: "DS-Digital";
+    src: url("font/DS-DIGIT.TFF");
+}
+
+
 
 html {
     width: 100%;
@@ -25,14 +44,15 @@ body {
 header {
     width: 100%;
     height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
     header>p {
         color: #fff;
-        display: flex;
-        justify-content: center;
-        margin: auto;
-        font-size: 1.6em;
+        font-size: 1.3em;
+        font-family: sans-serif;
     }
 
         header>p>time {
@@ -50,50 +70,110 @@ main {
         width: 50%;
         background-color: var(--background-color);
         border-radius: 2%;
-        border: solid 2px var(--border-color);
+        border: solid 3px var(--border-color);
     }
 
     main>nav {
         width: 25%;
+        height: 100%;
     }
 
         main>nav>ul {
+            height: 100%;
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            color: #fff;
         }
 
-        
+        main>nav:first-child>ul {
+            align-items: flex-end;
+        }
+
+        main>nav:last-child>ul {
+            align-items: flex-start;
+        }
+
+            main>nav>ul>li {
+                height: 33.33%;
+                display: flex;
+                align-items: center;
+            }
+
+            main>nav:first-child>ul>li:nth-child(2),
+            main>nav:first-child>ul>li:nth-child(3),
+            main>nav:last-child>ul>li:last-child {
+                font-size: 6em;
+            }
+
+            main>nav:last-child>ul>li:nth-child(1),
+            main>nav:last-child>ul>li:nth-child(2) {
+                font-size: 7em;
+            }
+
+            main>nav:last-child>ul>li:last-child {
+                font-size: 5.85em;
+            }
+
+
+            /*Barra lateral izquierda*/
+            main>nav:first-child>ul>li:first-child {
+                padding: 0 15px;
+            }
+
+                main>nav:first-child>ul>li:first-child>p>span {
+                    position: relative;
+                }
+
+                    main>nav:first-child>ul>li:first-child>p>span:nth-child(1) {
+                        left: 11px;
+                        font-size: 2.5em;
+                    }
+
+                    main>nav:first-child>ul>li:first-child>p>span:nth-child(2) {
+                        bottom: 5px;
+                        font-size: 1.5em;
+                    }
+
+                    main>nav:first-child>ul>li:first-child>p>span:nth-child(3) {
+                        right: 5px;
+                        font-size: 2.5em;
+                    }
+
+            main>nav:first-child>ul>li:nth-child(2) {
+                padding: 0 18px;
+            }
+
+            main>nav:first-child>ul>li:last-child {
+                padding: 0 20px;
+            }
+
+
+            /*Barra lateral izquierda*/
+            main>nav:last-child>ul>li:nth-child(1),
+            main>nav:last-child>ul>li:nth-child(2) {
+                padding: 0 10px;
+            }
+
+            main>nav:last-child>ul>li:last-child {
+                padding: 0 24px;
+            }
+
+    main>div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        main>div>p {
+            font-family: 'DS-Digital';
+            font-size: 4em;
+            color: #fff;
+        }
 
 footer {
     width: 100%;
     height: 7%;
     padding: 20px;
     background-color: #000;
-}
-
-        
-
-/*Ajuste de tamaño de las imágenes*/
-main>nav:first-child>ul>li:first-child>p>img {
-    width: 50px;
-}
-
-main>nav:first-child>ul>li:first-child>p>img:first-child {
-    width: 35px;
-}
-
-main>nav:first-child>ul>li:nth-child(2)>p>img,
-main>nav:last-child>ul>li:first-child>p>img,
-main>nav:last-child>ul>li:nth-child(2)>p>img {
-    width: 90px;
-}
-
-main>nav:first-child>ul>li:nth-child(3)>p>img {
-    width: 150px;
-}
-
-main>nav:last-child>ul>li:nth-child(3)>p>img {
-    width: 120px;
 }
