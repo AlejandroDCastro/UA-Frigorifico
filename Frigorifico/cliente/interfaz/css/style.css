@@ -1,3 +1,10 @@
+/*FUENTE DIGITAL*/
+@font-face {
+    font-family: "DS-Digital";
+    src: url("../font/DS-DIGI.TTF") format('truetype');
+}
+
+
 
 /*VARIABLES*/
 :root {
@@ -18,14 +25,7 @@
 }
 
 .desactivado {
-    opacity: 0.2;
-}
-
-
-/*FUENTE DIGITAL*/
-@font-face {
-    font-family: "DS-Digital";
-    src: url("font/DS-DIGIT.TFF");
+    opacity: 0.3;
 }
 
 
@@ -44,19 +44,32 @@ body {
 header {
     width: 100%;
     height: 5%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
     header>p {
+        height: 100%;
         color: #fff;
         font-size: 1.3em;
         font-family: sans-serif;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-        header>p>time {
-            padding: 0 10px;
+        header>p>time,
+        header>p>span {
+            padding: 0 13px;
+        }
+
+        header>p>time:nth-child(2) {
+            position: relative;
+            left: 35px;
+        }
+
+        header>p>span {
+            position: relative;
+            top: 20px;
+            font-size: 1.7em;
         }
 
 main {
@@ -112,13 +125,13 @@ main {
             }
 
             main>nav:last-child>ul>li:last-child {
-                font-size: 5.85em;
+                font-size: 5.8em;
             }
 
 
             /*Barra lateral izquierda*/
             main>nav:first-child>ul>li:first-child {
-                padding: 0 15px;
+                padding: 0 17px;
             }
 
                 main>nav:first-child>ul>li:first-child>p>span {
@@ -141,11 +154,11 @@ main {
                     }
 
             main>nav:first-child>ul>li:nth-child(2) {
-                padding: 0 18px;
+                padding: 0 20px;
             }
 
             main>nav:first-child>ul>li:last-child {
-                padding: 0 20px;
+                padding: 0 24px;
             }
 
 
@@ -162,14 +175,27 @@ main {
     main>div {
         display: flex;
         justify-content: center;
-        align-items: center;
+        position: relative;
     }
 
         main>div>p {
-            font-family: 'DS-Digital';
-            font-size: 4em;
-            color: #fff;
+            position: absolute;
+            top: 80px;
         }
+
+            main>div>p>output {
+                font-family: "DS-Digital";
+                font-size: 13em;
+                color: #fff;
+                position: relative;
+            }
+
+                main>div>p>output>span {
+                    position: absolute;
+                    font-size: 0.25em;
+                    right: -18px;
+                    top: 25px;
+                }
 
 footer {
     width: 100%;
