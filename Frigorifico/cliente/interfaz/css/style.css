@@ -30,6 +30,7 @@
 
 
 
+/*CSS Interfaz de Menú*/
 html {
     width: 100%;
     height: 100%;
@@ -154,11 +155,11 @@ main {
                     }
 
             main>nav:first-child>ul>li:nth-child(2) {
-                padding: 0 20px;
+                padding: 0 26.5px;
             }
 
             main>nav:first-child>ul>li:last-child {
-                padding: 0 24px;
+                padding: 0 26.5px;
             }
 
 
@@ -169,7 +170,7 @@ main {
             }
 
             main>nav:last-child>ul>li:last-child {
-                padding: 0 24px;
+                padding: 0 23.5px;
             }
 
     main>div {
@@ -203,3 +204,17 @@ footer {
     padding: 20px;
     background-color: #000;
 }
+
+
+
+
+
+/*CSS Interfaz de inicio
+.interfazInicio {
+    background-color: #000;
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+}*/
