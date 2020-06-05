@@ -19,7 +19,13 @@
 }
 
 
+
 /*CLASES*/
+
+.ocultar {
+    display: none;
+}
+
 .activado {
     opacity: 1.0;
 }
@@ -28,9 +34,20 @@
     opacity: 0.3;
 }
 
+.fade-out {
+    animation: fadeOut 1.8s;
+}
+
+.fade-in {
+    animation: fadeIn 1.8s;
+}
 
 
-/*CSS Interfaz de Menú*/
+
+/********************* CSS Interfaz de Menú *********************/
+
+
+/*Pantalla de Inicio*/
 html {
     width: 100%;
     height: 100%;
@@ -42,12 +59,17 @@ body {
     height: 100%;
 }
 
-header {
+#inicio {
+    width: 100%;
+    height: 100%;
+}
+
+#inicio>header {
     width: 100%;
     height: 5%;
 }
 
-    header>p {
+    #inicio>header>p {
         height: 100%;
         color: #fff;
         font-size: 1.3em;
@@ -57,42 +79,42 @@ header {
         align-items: center;
     }
 
-        header>p>time,
-        header>p>span {
+        #inicio>header>p>time,
+        #inicio>header>p>span {
             padding: 0 13px;
         }
 
-        header>p>time:nth-child(2) {
+        #inicio>header>p>time:nth-child(2) {
             position: relative;
             left: 35px;
         }
 
-        header>p>span {
+        #inicio>header>p>span {
             position: relative;
             top: 20px;
             font-size: 1.7em;
         }
 
-main {
+#inicio>main {
     width: 100%;
     height: 88%;
     display: flex;
     flex-direction: row;
 }
 
-    main>div {
+    #inicio>main>div {
         width: 50%;
         background-color: var(--background-color);
         border-radius: 2%;
         border: solid 3px var(--border-color);
     }
 
-    main>nav {
+    #inicio>main>nav {
         width: 25%;
         height: 100%;
     }
 
-        main>nav>ul {
+        #inicio>main>nav>ul {
             height: 100%;
             list-style-type: none;
             display: flex;
@@ -100,105 +122,105 @@ main {
             color: #fff;
         }
 
-        main>nav:first-child>ul {
+        #inicio>main>nav:first-child>ul {
             align-items: flex-end;
         }
 
-        main>nav:last-child>ul {
+        #inicio>main>nav:last-child>ul {
             align-items: flex-start;
         }
 
-            main>nav>ul>li {
+            #inicio>main>nav>ul>li {
                 height: 33.33%;
                 display: flex;
                 align-items: center;
             }
 
-            main>nav:first-child>ul>li:nth-child(2),
-            main>nav:first-child>ul>li:nth-child(3),
-            main>nav:last-child>ul>li:last-child {
+            #inicio>main>nav:first-child>ul>li:nth-child(2),
+            #inicio>main>nav:first-child>ul>li:nth-child(3),
+            #inicio>main>nav:last-child>ul>li:last-child {
                 font-size: 6em;
             }
 
-            main>nav:last-child>ul>li:nth-child(1),
-            main>nav:last-child>ul>li:nth-child(2) {
+            #inicio>main>nav:last-child>ul>li:nth-child(1),
+            #inicio>main>nav:last-child>ul>li:nth-child(2) {
                 font-size: 7em;
             }
 
-            main>nav:last-child>ul>li:last-child {
+            #inicio>main>nav:last-child>ul>li:last-child {
                 font-size: 5.8em;
             }
 
 
             /*Barra lateral izquierda*/
-            main>nav:first-child>ul>li:first-child {
+            #inicio>main>nav:first-child>ul>li:first-child {
                 padding: 0 17px;
             }
 
-                main>nav:first-child>ul>li:first-child>p>span {
+                #inicio>main>nav:first-child>ul>li:first-child>p>span {
                     position: relative;
                 }
 
-                    main>nav:first-child>ul>li:first-child>p>span:nth-child(1) {
+                    #inicio>main>nav:first-child>ul>li:first-child>p>span:nth-child(1) {
                         left: 11px;
                         font-size: 2.5em;
                     }
 
-                    main>nav:first-child>ul>li:first-child>p>span:nth-child(2) {
+                    #inicio>main>nav:first-child>ul>li:first-child>p>span:nth-child(2) {
                         bottom: 5px;
                         font-size: 1.5em;
                     }
 
-                    main>nav:first-child>ul>li:first-child>p>span:nth-child(3) {
+                    #inicio>main>nav:first-child>ul>li:first-child>p>span:nth-child(3) {
                         right: 5px;
                         font-size: 2.5em;
                     }
 
-            main>nav:first-child>ul>li:nth-child(2) {
+            #inicio>main>nav:first-child>ul>li:nth-child(2) {
                 padding: 0 26.5px;
             }
 
-            main>nav:first-child>ul>li:last-child {
+            #inicio>main>nav:first-child>ul>li:last-child {
                 padding: 0 26.5px;
             }
 
 
             /*Barra lateral izquierda*/
-            main>nav:last-child>ul>li:nth-child(1),
-            main>nav:last-child>ul>li:nth-child(2) {
+            #inicio>main>nav:last-child>ul>li:nth-child(1),
+            #inicio>main>nav:last-child>ul>li:nth-child(2) {
                 padding: 0 10px;
             }
 
-            main>nav:last-child>ul>li:last-child {
+            #inicio>main>nav:last-child>ul>li:last-child {
                 padding: 0 23.5px;
             }
 
-    main>div {
+    #inicio>main>div {
         display: flex;
         justify-content: center;
         position: relative;
     }
 
-        main>div>p {
+        #inicio>main>div>p {
             position: absolute;
             top: 80px;
         }
 
-            main>div>p>output {
+            #inicio>main>div>p>output {
                 font-family: "DS-Digital";
                 font-size: 13em;
                 color: #fff;
                 position: relative;
             }
 
-                main>div>p>output>span {
+                #inicio>main>div>p>output>span {
                     position: absolute;
                     font-size: 0.25em;
                     right: -18px;
                     top: 25px;
                 }
 
-footer {
+#inicio>footer {
     width: 100%;
     height: 7%;
     padding: 20px;
@@ -207,14 +229,81 @@ footer {
 
 
 
+/*Pantalla de Bloqueo*/
 
-
-/*CSS Interfaz de inicio
-.interfazInicio {
+#bloqueo {
     background-color: #000;
-    position: fixed;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    top: 0;
-}*/
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-family: "DS-Digital";
+}
+
+#bloqueo>div,
+#bloqueo>div>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    #bloqueo>div>h2 {
+        position: fixed;
+        top: 50px;
+    }
+
+        #bloqueo>div>h2>img {
+            width: 140px;
+            background-color: #fff;
+            border: 1px solid #fff;
+            border-radius: 50%;
+        }
+
+    #bloqueo>div>div {
+        position: relative;
+        top: 140px;
+    }
+
+    #bloqueo>div>div>div {
+        margin: 15px;
+    }
+
+        #bloqueo>div>div>div:first-child>time {
+            display: block;
+            text-align: center;
+        }
+
+        #bloqueo>div>div>div:first-child>time:first-child {
+            font-size: 8.5em;
+            padding-bottom: 50px;
+        }
+
+        #bloqueo>div>div>div:first-child>time:nth-child(2) {
+            font-family: sans-serif;
+            font-size: 4em;
+        }
+
+        #tempFrigo {
+            font-size: 30em;
+        }
+
+
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

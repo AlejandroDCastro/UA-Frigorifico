@@ -9,111 +9,85 @@
 	<meta name="keywords" content="frigorifico, interfaz, usabilidad, accesibilidad">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/fontello.css">
+	<script src="../electro.js"></script>
+	<script src="js/script.js"></script>
 	<title>Interfaz de Frigorífico</title>
 </head>
-<!--
-<div class="interfazInicio">
-	<p></p>
-	<p></p>
-</div>-->
-<body>
-	<header>
-		<p>
-			<span class="icon-bell"></span>
-			<time datetime="08:30">08:30 AM</time>
-			<time datetime="1914-12-20">20/12/1914</time>
-		</p>
-	</header>
-	<main>
-		<nav>
-			<ul>
-				<li>
-					<p>
-						<span class="icon-fridge activado"></span>
-						<span class="icon-exchange desactivado"></span>
-						<span class="icon-snowflake desactivado"></span>
-					</p>
-				</li>
-				<li>
-					<p>
-						<span class="icon-fridge"></span>
-					</p>
-				</li>
-				<li>
-					<p>
-						<span class="icon-basket"></span>
-					</p>
-				</li>
-			</ul>
-		</nav>
+<body data-vista="bloqueo">
+	<div id="bloqueo">
 		<div>
-			<p>
-				<output>+4 <span>º</span></output>
-			</p>
+			<h2><img src="img/logotipo.png" alt="Logotipo empresa española"></h2>
+			<div>
+				<div>
+					<time id="hora" datetime="08:30">08<span>:</span>30 AM</time>
+					<time id="fecha" datetime="1914-12-20">20 / 12 / 1914</time>
+				</div>
+				<div>
+					<span>
+						<output id="tempFrigo">+4</output>
+					</span>
+				</div>
+			</div>
 		</div>
-		<nav>
-			<ul>
-				<li>
-					<p>
-						<span class="icon-plus"></span>
-					</p>
-				</li>
-				<li>
-					<p>
-						<span class="icon-minus"></span>
-					</p>
-				</li>
-				<li>
-					<p>
-						<span class="icon-cog"></span>
-					</p>
-				</li>
-			</ul>
-		</nav>
-	</main>
-	<footer>
+	</div>
+	<div id="inicio" class="ocultar">
+		<header>
+			<p>
+				<span class="icon-bell"></span>
+				<time datetime="08:30">08<span>:</span>30 AM</time>
+				<time datetime="1914-12-20">20 / 12 / 1914</time>
+			</p>
+		</header>
+		<main>
+			<nav>
+				<ul>
+					<li>
+						<p>
+							<span class="icon-fridge activado"></span>
+							<span class="icon-exchange desactivado"></span>
+							<span class="icon-snowflake desactivado"></span>
+						</p>
+					</li>
+					<li>
+						<p>
+							<span class="icon-fridge"></span>
+						</p>
+					</li>
+					<li>
+						<p>
+							<span class="icon-basket"></span>
+						</p>
+					</li>
+				</ul>
+			</nav>
+			<div>
+				<p>
+					<output>+4 <span>º</span></output>
+				</p>
+			</div>
+			<nav>
+				<ul>
+					<li>
+						<p>
+							<span class="icon-plus"></span>
+						</p>
+					</li>
+					<li>
+						<p>
+							<span class="icon-minus"></span>
+						</p>
+					</li>
+					<li>
+						<p>
+							<span class="icon-cog"></span>
+						</p>
+					</li>
+				</ul>
+			</nav>
+		</main>
+		<footer>
 
-	</footer>
+		</footer>
+	</div>
 </body>
 </html>
-
-
-<!--
-
-<!DOCTYPE html>
-<html>
-
-<head>
-	<meta charset="utf8">
-	<title>Interfaz de Frigorífico</title>
-	<script src="../electro.js"></script>
-</head>
-
-<body>
-	<button onclick="encenderLuzRefrigerador();">Encender luz refrigerador</button>
-	<button onclick="apagarLuzRefrigerador();">Apagar luz refrigerador</button>
-	<script>
-		var frigo = new Electro();
-
-		function encenderLuzRefrigerador() {
-				frigo.refrigeradorLuz = true;
-			}
-
-			function apagarLuzRefrigerador() {
-				frigo.refrigeradorLuz = false;
-			}
-
-		frigo.on("connect", function () {
-			console.log("Ya estoy conectado con el frigorifico!!!")
-			console.log("Con este hay " + frigo.clientes + " clientes conectados");
-
-			// Activar la luz del refrigerador cuando se abre la puerta
-			frigo.on("refrigeradorPuerta", function (abierta) {
-				console.log("Puerta:", abierta);
-				frigo.refrigeradorLuz = abierta;
-			});
-		});
-	</script>
-</body>
-
-</html>-->
