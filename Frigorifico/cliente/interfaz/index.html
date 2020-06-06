@@ -19,12 +19,12 @@
 			<h2><img src="img/logotipo.png" alt="Logotipo empresa española"></h2>
 			<div>
 				<div>
-					<time id="hora" datetime="08:30">08<span>:</span>30 AM</time>
-					<time id="fecha" datetime="1914-12-20">20 / 12 / 1914</time>
+					<time id="hora" datetime="08:30" data-aparece="si"></time>
+					<time id="fecha" datetime="1914-12-20"></time>
 				</div>
 				<div>
 					<span>
-						<output id="tempFrigo">+4</output>
+						<output id="tempFrigo"><img src="img/loading.gif" alt="Cargando..."></output>
 					</span>
 				</div>
 			</div>
@@ -33,30 +33,38 @@
 	<div id="inicio" class="ocultar">
 		<header>
 			<p>
-				<span class="icon-bell"></span>
-				<time datetime="08:30">08<span>:</span>30 AM</time>
-				<time datetime="1914-12-20">20 / 12 / 1914</time>
+				<a href="#">
+					<span class="icon-bell"></span>
+				</a>
+				<time datetime="08:30" data-aparece="si"></time>
+				<time datetime="1914-12-20"></time>
 			</p>
 		</header>
 		<main>
 			<nav>
 				<ul>
 					<li>
-						<p>
-							<span class="icon-fridge activado"></span>
-							<span class="icon-exchange desactivado"></span>
-							<span class="icon-snowflake desactivado"></span>
-						</p>
+						<a href="#">
+							<p>
+								<span class="icon-fridge activado"></span>
+								<span class="icon-exchange desactivado"></span>
+								<span class="icon-snowflake desactivado"></span>
+							</p>
+						</a>
 					</li>
 					<li>
-						<p>
-							<span class="icon-fridge"></span>
-						</p>
+						<a href="#">
+							<p>
+								<span class="icon-fridge"></span>
+							</p>
+						</a>
 					</li>
 					<li>
-						<p>
-							<span class="icon-basket"></span>
-						</p>
+						<a href="#">
+							<p>
+								<span class="icon-basket"></span>
+							</p>
+						</a>
 					</li>
 				</ul>
 			</nav>
@@ -68,19 +76,25 @@
 			<nav>
 				<ul>
 					<li>
-						<p>
-							<span class="icon-plus"></span>
-						</p>
+						<a href="#">
+							<p>
+								<span class="icon-plus"></span>
+							</p>
+						</a>
 					</li>
 					<li>
-						<p>
-							<span class="icon-minus"></span>
-						</p>
+						<a href="#">
+							<p>
+								<span class="icon-minus"></span>
+							</p>
+						</a>
 					</li>
 					<li>
-						<p>
-							<span class="icon-cog"></span>
-						</p>
+						<a href="#">
+							<p>
+								<span class="icon-cog"></span>
+							</p>
+						</a>
 					</li>
 				</ul>
 			</nav>
