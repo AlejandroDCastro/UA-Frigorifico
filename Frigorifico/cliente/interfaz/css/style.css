@@ -10,6 +10,7 @@
 :root {
     --background-color: #181818;
     --border-color: #0f0f0f;
+    --main-color: #fff;
 }
 
 * {
@@ -79,7 +80,7 @@ body {
 
     #inicio>header>p {
         height: 100%;
-        color: #fff;
+        color: var(--main-color);
         font-size: 1.3em;
         font-family: sans-serif;
         display: flex;
@@ -87,27 +88,33 @@ body {
         align-items: center;
     }
 
-        #inicio>header>p>time:nth-child(2) {
-            font-family: 'DS-Digital';
-            font-size: 1.6em;
+        #inicio>header>p>a:nth-child(2) {
+            color: var(--main-color);
+            text-decoration: none;
         }
 
-        #inicio>header>p>time,
-        #inicio>header>p>a>span {
-            padding: 0 13px;
-        }
+            #inicio>header>p>a:nth-child(2)>time {
+                font-family: 'DS-Digital';
+                font-size: 1.6em;
+            }
 
-        #inicio>header>p>time:nth-child(2) {
-            position: relative;
-            left: 35px;
-        }
+            #inicio>header>p>a>time,
+            #inicio>header>p>time,
+            #inicio>header>p>a>span {
+                padding: 0 13px;
+            }
 
-        #inicio>header>p>a>span {
-            position: relative;
-            top: 20px;
-            font-size: 1.7em;
-            color: #fff;
-        }
+            #inicio>header>p>a:nth-child(2)>time {
+                position: relative;
+                left: 40px;
+            }
+
+            #inicio>header>p>a>span {
+                position: relative;
+                top: 20px;
+                font-size: 1.7em;
+                color: var(--main-color);
+            }
 
 #inicio>main {
     width: 100%;
@@ -147,6 +154,15 @@ body {
                 height: 33.33%;
                 display: flex;
                 align-items: center;
+                border-radius: 5%;
+                border: 3px solid #000;
+            }
+
+            #inicio>main>nav>ul>li:hover {
+                background-color: var(--background-color);
+                border: 3px solid var(--border-color);
+                cursor: pointer;
+                transition: .4s;
             }
 
             #inicio>main>nav:first-child>ul>li:nth-child(2),
@@ -171,7 +187,7 @@ body {
             }
 
                 #inicio>main>nav>ul>li>a {
-                    color: #fff;
+                    color: var(--main-color);
                 }
 
                     #inicio>main>nav:first-child>ul>li:first-child>a>p>span {
@@ -226,8 +242,13 @@ body {
             #inicio>main>div>p>output {
                 font-family: "DS-Digital";
                 font-size: 13em;
-                color: #fff;
+                color: var(--main-color);
                 position: relative;
+            }
+
+            #inicio>main>div>p>output:hover,
+            #bloqueo output:hover {
+                cursor: default;
             }
 
                 #inicio>main>div>p>output>span {
@@ -252,7 +273,7 @@ body {
     background-color: #000;
     width: 100%;
     height: 100%;
-    color: #fff;
+    color: var(--main-color);
     font-family: "DS-Digital";
 }
 
@@ -270,8 +291,8 @@ body {
 
         #bloqueo>div>h2>img {
             width: 140px;
-            background-color: #fff;
-            border: 1px solid #fff;
+            background-color: var(--main-color);
+            border: 1px solid var(--main-color);
             border-radius: 50%;
         }
 

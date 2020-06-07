@@ -1,7 +1,9 @@
 
 // Constantes globales
-const tempFade = 0.7;  // Tiempo de transición entre vistas
-const tempActualizacion = 1000; // milisegundos
+const tempFade          = 0.7;   // Tiempo de transición entre vistas
+const tempActualizacion = 1000;  // 1 milisegundo
+const comprobacionesRep = 100;
+const tempInteraccion   = 60000; // 1 minuto
 
 
 
@@ -46,36 +48,69 @@ frigo.on("connect", function () {
 
 // Función que se ejecuta al cargarse todos los elementos de la página y el frigorífico
 function load() {
-    let bloqueo = $('#bloqueo'),
-        inicio  = $('#inicio'),
-        grados  = Math.round(frigo.refrigeradorTemperatura);
+    let grados = Math.round(frigo.refrigeradorTemperatura);
         
     // Mostramos los datos de inicio
     setInterval(mostrarDatosTiempo, tempActualizacion);
     
-    // Mostramos la temperatura
     let idTemp = setTimeout(function() {
+
+        // Mostramos la temperatura
         temperatura = (grados >= 0) ? ('+' + grados) : ('-' + grados);
         $('#bloqueo output').innerHTML = `${temperatura}`;
         if (grados > 9  ||  grados < -9)
             $('#bloqueo output').classList.add('ajustaTemp');
         $('#inicio output').innerHTML  = `${temperatura} <span>º</span>`;
-    }, tempActualizacion);
-    sessionStorage.setItem('idTemp', 999);
 
-    // Cambiamos a la vista de inicio
+        // Cambiamos a la vista de inicio
+        desbloquearInicio();
+
+        clearTimeout(idTemp);
+    }, tempActualizacion);
+}
+
+
+
+
+
+// Función para desbloquear la pantalla de bloqueo mediante diferentes eventos
+function desbloquearInicio() {
+    let bloqueo = $('#bloqueo');
+
+    let idTemp = setInterval(function() {
+        if (frigo.frigorificoPresencia) {
+            bloqueoYDesbloqueo('bloqueo', 'inicio');
+            clearInterval(idTemp);
+        }
+    }, comprobacionesRep);
+
     bloqueo.onclick = function() {
-        $('body').setAttribute('data-vista', 'inicio');
-        mostrarDatosTiempo();
-        cambiarVista(bloqueo, inicio);
+        clearInterval(idTemp);
+        bloqueoYDesbloqueo('bloqueo', 'inicio');
     };
 
     bloqueo.ontouchmove = function() {
-        $('body').setAttribute('data-vista', 'inicio');
-        mostrarDatosTiempo();
-        cambiarVista(bloqueo, inicio);
+        clearInterval(idTemp);
+        bloqueoYDesbloqueo('bloqueo', 'inicio');
     };
+    
 }
+
+
+
+
+
+
+// Función para organizar y empezar el cambio de vista
+function bloqueoYDesbloqueo(ocultar, mostrar) {
+    let objOcultar = $('#' + ocultar),
+        objMostrar  = $('#' + mostrar);
+
+    $('body').setAttribute('data-vista', mostrar);
+    mostrarDatosTiempo();
+    cambiarVista(objOcultar, objMostrar);
+}
+
 
 
 
@@ -109,9 +144,6 @@ function mostrarDatosTiempo() {
     if (times[1].textContent != dia) {
         times[1].textContent = dia;
     }
-
-    clearTimeout(sessionStorage.getItem('idTemp'));
-    sessionStorage.removeItem('idTemp');
 }
 
 
@@ -208,6 +240,7 @@ function cambiarVista(objOcultar, objMostrar) {
         objMostrar.classList.remove('ocultar');
         objOcultar.classList.add('ocultar');
         
+        // Si hemos pasado a la vista de inicio...
         if ($('body').getAttribute('data-vista') == 'inicio')
             loadInicio();
     }, tempFade);
@@ -224,5 +257,21 @@ function cambiarVista(objOcultar, objMostrar) {
 
 // Función para cargar las funcionalidades de la interfaz de inicio
 function loadInicio() {
-    console.log("hola");
+
+    // Una vez desbloqueamos tenemos 1 minuto de inactividad para volver a la pantalla de bloqueo
+    let idTemp = setTimeout(function() {
+        bloqueoYDesbloqueo('inicio', 'bloqueo');
+
+        // Si no hay nadie delante se puede volver a desbloquear con presencia...
+        if (!frigo.frigorificoPresencia)
+            desbloquearInicio();
+        clearTimeout(idTemp);
+    }, tempInteraccion);
+
+    // Reseteamos el periodo de interacción con la interfaz
+    $('body').onclick = function() {
+        clearTimeout(idTemp);
+        loadInicio();
+    };
+
 }
