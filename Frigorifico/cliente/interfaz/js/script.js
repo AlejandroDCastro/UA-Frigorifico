@@ -274,4 +274,110 @@ function loadInicio() {
         loadInicio();
     };
 
+    // Activamos las funcionalidades del frigorífico
+    funcionalidadesMenuFrigo(idTemp);
+
 }
+
+
+
+
+
+// Función para activar las funcionalidades de las opciones de los menús de la interfaz
+function funcionalidadesMenuFrigo(temporizador) {
+    let opciones = $$('li');
+
+    for (let i=0; i<opciones.length; i++) {
+        let elemento = opciones[i];
+/*
+        elemento.onmousemove = function() {
+            elemento.classList.add('recibeFoco');
+        };
+
+        elemento.onmouseout = function() {
+            elemento.classList.remove('recibeFoco');
+        };*/
+
+        if ('ontouchstart' in document.documentElement) {
+            elemento.ontouchstart = function() {
+                elemento.classList.add('recibeFoco');
+            };
+    
+            elemento.ontouchend = function() {
+                elemento.classList.remove('recibeFoco');
+            };
+        } else {
+            elemento.onmousemove = function() {
+                elemento.classList.add('recibeFoco');
+            };
+    
+            elemento.onmouseout = function() {
+                elemento.classList.remove('recibeFoco');
+            };
+        }
+
+        elemento.onclick = function() {
+        /*    if (i == 0) {
+                
+            } else if (i == 1) {
+
+            } else if (i == 2) {
+
+            } else if (i == 3) {
+
+            } else if (i == 4) {
+
+            } else if (i == 5) {
+
+            }*/
+            console.log(i);
+        }
+    }
+    
+}
+
+/*
+
+
+
+// Función para activar las funcionalidades de las opciones de los menús de manera táctil
+function opcionesTactiles() {
+    let opciones = $$('li');
+
+    for (let i=0; i<opciones.length; i++) {
+        let elemento = opciones[i];
+
+        elemento.ontouchstart = function() {
+            console.log("estoy tocando");
+            elemento.classList.add('pulsado');
+        };
+
+        elemento.ontouchend = function() {
+            console.log("estoy quitando el dedo");
+            elemento.classList.remove('pulsado');
+        };
+        /*
+        if (i == 0) {
+
+        } else if (i == 1) {
+
+        } else if (i == 2) {
+
+        } else if (i == 3) {
+
+        } else if (i == 4) {
+
+        } else if (i == 5) {
+
+        }
+    }
+}
+
+
+
+
+
+// Función para activar las funcionalidades de las opciones de los menús con teclado
+function opcionesConTeclado() {
+    
+}*/
