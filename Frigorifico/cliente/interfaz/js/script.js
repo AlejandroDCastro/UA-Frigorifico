@@ -3,7 +3,7 @@
 const tempFade          = 0.7;   // Tiempo de transición entre vistas
 const tempActualizacion = 800;  // 0.8 milisegundo
 const comprobacionesRep = 100;
-const tempInteraccion   = 60000; // 1 minuto
+const tempInteraccion   = 500000; // 1 minuto
 
 
 
@@ -141,7 +141,7 @@ function bloqueoYDesbloqueo(ocultar, mostrar) {
 
     $('body').setAttribute('data-vista', mostrar);
     mostrarDatosTiempo(frigo.frigorificoHora);
-    cambiarVista(objOcultar, objMostrar);
+    desbloquearVista(objOcultar, objMostrar);
 }
 
 
@@ -266,7 +266,7 @@ function getFormatoFecha(tiempo) {
 
 
 // Función para ocultar una vista de la aplicación y restablecer la anterior
-function cambiarVista(objOcultar, objMostrar) {
+function desbloquearVista(objOcultar, objMostrar) {
     
     // Actualizamos visibilidad de las vistas
     setTimeout(function() {
@@ -274,8 +274,12 @@ function cambiarVista(objOcultar, objMostrar) {
         objOcultar.classList.add('ocultar');
         
         // Si hemos pasado a la vista de inicio...
-        if ($('body').getAttribute('data-vista') == 'inicio')
+        if ($('body').getAttribute('data-vista') == 'inicio') {
+
+            // Para localizarnos en la vista actual...
+            sessionStorage.setItem('vista', 'vistaTemperatura');
             loadInicio();
+        }
     }, tempFade);
 
     // Realizamos las animaciones
@@ -299,6 +303,7 @@ function loadInicio() {
         if (!frigo.frigorificoPresencia)
             desbloquearInicio();
         clearTimeout(idTemp);
+        sessionStorage.removeItem('vista');
     }, tempInteraccion);
 
     // Reseteamos el periodo de interacción con la interfaz
@@ -319,7 +324,8 @@ function loadInicio() {
 
 // Función para activar las funcionalidades de las opciones de los menús de la interfaz
 function funcionalidadesMenuFrigo() {
-    let opciones = $$('li');
+    let opciones    = $$('li'),
+        vistaActual = sessionStorage.getItem('vista');
 
     for (let i=0; i<opciones.length; i++) {
         let elemento = opciones[i];
@@ -355,18 +361,33 @@ function funcionalidadesMenuFrigo() {
         }
 
         elemento.onclick = function() {
+
+            
+            // Cambiamos de vista y establecemos funcionalidades
             if (i == 0) {
                 cambiarVistaCompartimento();
+                if (vistaActual == 'vistaRefrigerador'  ||  vistaActual == 'vistaCongelador') {
+                    console.log("congelate");
+                    if ($('ul>li>a>p').getAttribute('data-activado') == 'refrigerador')
+                        cambiarVista('vistaRefrigerador');
+                    else
+                        cambiarVista('vistaCongelador');
+                    funcionalidadesCompartimento();
+                }
             } else if (i == 1) {
-
+                if ($('ul>li>a>p').getAttribute('data-activado') == 'refrigerador')
+                    cambiarVista('vistaRefrigerador');
+                else
+                    cambiarVista('vistaCongelador');
+                funcionalidadesCompartimento();
             } else if (i == 2) {
-
+                //cambiarVista();
             } else if (i == 3) {
-                
+                //cambiarVista();
             } else if (i == 4) {
-
+                //cambiarVista();
             } else if (i == 5) {
-
+                //cambiarVista();
             }
         }
     }
@@ -411,4 +432,81 @@ function cambiarVistaCompartimento() {
 
 
 
-// Función para cambiar la temperatur
+// Función cambiar de vista
+function cambiarVista(vista) {
+    let vistaAnterior = $('#' + sessionStorage.getItem('vista')),
+        vistaNueva    = $('#' + vista);
+
+    if (vista != sessionStorage.getItem('vista')) {
+
+        sessionStorage.setItem('vista', vista);
+        vistaAnterior.classList.add('ocultar');
+        vistaNueva.classList.remove('ocultar');
+    }
+}
+
+
+
+
+
+
+// Función para cambiar los parámetros del frigorífico y el congelador
+function funcionalidadesCompartimento() {
+    let vista     = '#' + sessionStorage.getItem('vista'),
+        encendido = $(vista + '>div>article:first-child>input[name="encendido"]'),
+        boton     = $(vista + '>div:last-child>button'),
+        valor     = encendido.value,
+        compart   = (vista == '#vistaRefrigerador') ? 'Refrigerador' : 'Congelador',
+        marcar    = false;
+
+    if (!marcar)
+        if (valor == 'si')
+            encendido.checked = true;
+/*Atencioooon hacer funcion para recoger los valores del servidor */
+    encendido.onclick = function() {
+        if (valor == 'no') {
+            encendido.checked = true;
+            encendido.value   = 'si';
+        } else {
+            encendido.checked = false;
+            encendido.value   = 'no';
+        }
+        valor = encendido.value;
+    };
+
+    boton.onclick = function() {
+        let luz = $(vista + '>div>article:last-child>div>input[name="luces' + compart + '"]:checked');
+
+        // Realizamos los cambios en el frigorífico...
+        if (vista == '#vistaRefrigerador') {
+
+            // Motor...
+            if (valor == 'no')
+                frigo.refrigeradorMotor = 0;
+            else
+                frigo.refrigeradorMotor = 1;
+
+            // Luz...
+            if (luz.value == 0)
+                frigo.refrigeradorLuz = false;
+            else if (luz.value == 2)
+                frigo.refrigeradorLuz = true;
+        } else {
+
+            // Motor...
+            if (valor == 'no')
+                frigo.congeladorMotor = 0;
+            else
+                frigo.congeladorMotor = 1;
+
+            // Luz
+            if (luz.value == 0)
+                frigo.congeladorLuz = false;
+            else if (luz.value == 2)
+                frigo.congeladorLuz = true;
+        }
+
+        // Volvemos a inicio...
+        cambiarVista('vistaTemperatura');
+    };
+}

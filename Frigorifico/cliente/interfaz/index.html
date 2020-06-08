@@ -34,34 +34,6 @@
 			</div>
 		</div>
 	</div>
-<!--	<div id="pop-up">
-		<div>
-			<section>
-				<h2>Refrigerador</h2>
-				<div>
-					<article>
-						<h3>Encendido</h3>
-						<input type="radio" name="encendido">
-					</article>
-					<article>
-						<h3>Luces</h3>
-						<div>
-							<label for="off">Apagadas</label>
-							<input type="radio" name="luces" id="off" value="off">
-						</div>
-						<div>
-							<label for="auto">Automáticas</label>
-							<input type="radio" name="luces" id="auto" value="auto">
-						</div>
-						<div>
-							<label for="on">Encendidas</label>
-							<input type="radio" name="luces" id="on" value="on">
-						</div>
-					</article>
-				</div>
-			</section>
-		</div>
-	</div>-->
 	<div id="inicio" class="ocultar">
 		<header>
 			<p>
@@ -102,34 +74,64 @@
 					</li>
 				</ul>
 			</nav>
-			<div>
+			<div id="vistaTemperatura">
 				<p>
 					<output>+4 <span>º</span></output>
 				</p>
-			<!--	<section id="pop-up">
-					<h3>Refrigerador</h3>
-					<div>
-						<article>
-							<h3>Encendido</h3>
-							<input type="radio" name="encendido">
-						</article>
-						<article>
-							<h3>Luces</h3>
-							<div>
-								<label for="off">Apagadas</label>
-								<input type="radio" name="luces" id="off" value="off">
-							</div>
-							<div>
-								<label for="auto">Automáticas</label>
-								<input type="radio" name="luces" id="auto" value="auto">
-							</div>
-							<div>
-								<label for="on">Encendidas</label>
-								<input type="radio" name="luces" id="on" value="on">
-							</div>
-						</article>
-					</div>
-				</section>-->
+			</div>
+			<div id="vistaRefrigerador" class="vistaCompartimento ocultar">
+				<h2>Opciones de Refrigerador</h2>
+				<div>
+					<article>
+						<h3>Encendido</h3>
+						<input type="radio" name="encendido" value="no">
+					</article>
+					<article>
+						<h3>Luz</h3>
+						<div>
+							<input type="radio" name="lucesRefrigerador" id="off1" value="0">
+							<label for="off1">Apagada</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesRefrigerador" id="auto1" value="1">
+							<label for="auto1">Automática</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesRefrigerador" id="on1" value="2">
+							<label for="on1">Encendida</label>
+						</div>
+					</article>
+				</div>
+				<div>
+					<button class="boton">Aceptar</button>
+				</div>
+			</div>
+			<div id="vistaCongelador" class="vistaCompartimento ocultar">
+				<h2>Opciones de Congelador</h2>
+				<div>
+					<article>
+						<h3>Encendido</h3>
+						<input type="radio" name="encendido" value="no">
+					</article>
+					<article>
+						<h3>Luz</h3>
+						<div>
+							<input type="radio" name="lucesCongelador" id="off2" value="0">
+							<label for="off2">Apagada</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesCongelador" id="auto2" value="1">
+							<label for="auto2">Automática</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesCongelador" id="on2" value="2">
+							<label for="on2">Encendida</label>
+						</div>
+					</article>
+				</div>
+				<div>
+					<button class="boton">Aceptar</button>
+				</div>
 			</div>
 			<nav>
 				<ul>
