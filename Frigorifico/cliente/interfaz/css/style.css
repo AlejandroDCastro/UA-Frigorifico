@@ -31,10 +31,6 @@
     opacity: 0;
 }
 
-.activado {
-    opacity: 1.0;
-}
-
 .desactivado {
     opacity: 0.3;
 }
@@ -271,6 +267,31 @@ body {
     padding: 20px;
     background-color: #000;
 }
+
+
+
+
+/*Pantalla de pop-up*/
+/*
+#pop-up {
+    width: 100%;
+    height: 100%;
+}
+
+    #pop-up>div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+
+        #pop-up>div>section {
+            width: 50%;
+            height: 88%;
+            margin: auto;
+            background-color: var(--background-color);
+        }
+*/
+
 
 
 

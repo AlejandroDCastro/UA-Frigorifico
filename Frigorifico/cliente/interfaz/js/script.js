@@ -1,7 +1,7 @@
 
 // Constantes globales
 const tempFade          = 0.7;   // Tiempo de transición entre vistas
-const tempActualizacion = 1000;  // 1 milisegundo
+const tempActualizacion = 800;  // 0.8 milisegundo
 const comprobacionesRep = 100;
 const tempInteraccion   = 60000; // 1 minuto
 
@@ -35,10 +35,10 @@ frigo.on("connect", function () {
     }
 
     // Activar la luz del refrigerador cuando se abre la puerta
-    frigo.on("refrigeradorPuerta", function (abierta) {
+ /*   frigo.on("refrigeradorPuerta", function (abierta) {
         console.log("Puerta:", abierta);
         frigo.refrigeradorLuz = abierta;
-    });
+    });*/
 });
 
 
@@ -51,9 +51,28 @@ function load() {
     let grados = Math.round(frigo.refrigeradorTemperatura);
         
     // Mostramos los datos de inicio
-    setInterval(mostrarDatosTiempo, tempActualizacion);
-    
+    //setInterval(mostrarDatosTiempo, tempActualizacion);
     let idTemp = setTimeout(function() {
+        frigo.on('frigorificoHora', function(fecha) {
+            mostrarDatosTiempo(fecha);
+            if ($('#bloqueo output').textContent == '') {
+
+                // Mostramos la temperatura
+                temperatura = (grados >= 0) ? ('+' + grados) : (grados);
+                $('#bloqueo output').innerHTML = `${temperatura}`;
+                if (grados > 9  ||  grados < -9)
+                    $('#bloqueo output').classList.add('ajustaTemp');
+                $('#inicio output').innerHTML  = `${temperatura} <span>º</span>`;
+
+                // Cambiamos a la vista de inicio
+                desbloquearInicio();
+                console.log("solo 1 vez...");
+            }
+        });
+        clearTimeout(idTemp);
+    }, tempActualizacion);
+    /*
+    let idTemp2 = setTimeout(function() {
 
         // Mostramos la temperatura
         temperatura = (grados >= 0) ? ('+' + grados) : ('-' + grados);
@@ -65,8 +84,8 @@ function load() {
         // Cambiamos a la vista de inicio
         desbloquearInicio();
 
-        clearTimeout(idTemp);
-    }, tempActualizacion);
+        clearTimeout(idTemp2);
+    }, tempActualizacion);*/
 }
 
 
@@ -77,6 +96,7 @@ function load() {
 function desbloquearInicio() {
     let bloqueo = $('#bloqueo');
 
+    /*
     let idTemp = setInterval(function() {
         if (frigo.frigorificoPresencia) {
             bloqueoYDesbloqueo('bloqueo', 'inicio');
@@ -91,6 +111,19 @@ function desbloquearInicio() {
 
     bloqueo.ontouchmove = function() {
         clearInterval(idTemp);
+        bloqueoYDesbloqueo('bloqueo', 'inicio');
+    };*/
+
+    frigo.on('frigorificoPresencia', function(presencia) {
+        if (presencia)
+            bloqueoYDesbloqueo('bloqueo', 'inicio');
+    });
+
+    bloqueo.onclick = function() {
+        bloqueoYDesbloqueo('bloqueo', 'inicio');
+    };
+
+    bloqueo.ontouchmove = function() {
         bloqueoYDesbloqueo('bloqueo', 'inicio');
     };
     
@@ -107,7 +140,7 @@ function bloqueoYDesbloqueo(ocultar, mostrar) {
         objMostrar  = $('#' + mostrar);
 
     $('body').setAttribute('data-vista', mostrar);
-    mostrarDatosTiempo();
+    mostrarDatosTiempo(frigo.frigorificoHora);
     cambiarVista(objOcultar, objMostrar);
 }
 
@@ -117,8 +150,8 @@ function bloqueoYDesbloqueo(ocultar, mostrar) {
 
 
 // Función para mostrar los datos del frigorífico en las interfaces de bloqueo e inicio
-function mostrarDatosTiempo() {
-    let fecha  = getFormatoFecha(),
+function mostrarDatosTiempo(tiempo) {
+    let fecha  = getFormatoFecha(tiempo),
         dia    = fecha[0],
         hora   = fecha[1],
         vista  = $('body').getAttribute('data-vista'),
@@ -151,10 +184,10 @@ function mostrarDatosTiempo() {
 
 
 // Función para obtener dentro de un array las cadenas con los formatos de fecha y hora a mostrar
-function getFormatoFecha() {
-    let fecha   = frigo.frigorificoHora,
-        datos  = fecha.toString().split(' '),
-        hora   = datos[4].split(':');
+function getFormatoFecha(tiempo) {
+    let fecha   = tiempo,
+        datos   = fecha.toString().split(' '),
+        hora    = datos[4].split(':');
         formato = new Array(2);
     
     switch (datos[0]) {
@@ -269,13 +302,14 @@ function loadInicio() {
     }, tempInteraccion);
 
     // Reseteamos el periodo de interacción con la interfaz
-    $('body').onclick = function() {
+    $('#inicio').onclick = function() {
         clearTimeout(idTemp);
+        console.log('Limpiate...');
         loadInicio();
     };
 
     // Activamos las funcionalidades del frigorífico
-    funcionalidadesMenuFrigo(idTemp);
+    funcionalidadesMenuFrigo();
 
 }
 
@@ -284,20 +318,13 @@ function loadInicio() {
 
 
 // Función para activar las funcionalidades de las opciones de los menús de la interfaz
-function funcionalidadesMenuFrigo(temporizador) {
+function funcionalidadesMenuFrigo() {
     let opciones = $$('li');
 
     for (let i=0; i<opciones.length; i++) {
         let elemento = opciones[i];
-/*
-        elemento.onmousemove = function() {
-            elemento.classList.add('recibeFoco');
-        };
 
-        elemento.onmouseout = function() {
-            elemento.classList.remove('recibeFoco');
-        };*/
-
+        // Aplicar estilos de usabilidad y accesibilidad
         if ('ontouchstart' in document.documentElement) {
             elemento.ontouchstart = function() {
                 elemento.classList.add('recibeFoco');
@@ -316,60 +343,65 @@ function funcionalidadesMenuFrigo(temporizador) {
             };
         }
 
+        if (i == 0) {
+            let transicion = $('ul>li>a>p>span:nth-child(2)');
+
+            elemento.onmousedown = function() {
+                transicion.classList.remove('desactivado');
+            };
+            elemento.onmouseup = function() {
+                transicion.classList.add('desactivado');
+            };
+        }
+
         elemento.onclick = function() {
-        /*    if (i == 0) {
-                
+            if (i == 0) {
+                cambiarVistaCompartimento();
             } else if (i == 1) {
 
             } else if (i == 2) {
 
             } else if (i == 3) {
-
+                
             } else if (i == 4) {
 
             } else if (i == 5) {
 
-            }*/
-            console.log(i);
+            }
         }
     }
     
 }
 
-/*
 
 
 
-// Función para activar las funcionalidades de las opciones de los menús de manera táctil
-function opcionesTactiles() {
-    let opciones = $$('li');
 
-    for (let i=0; i<opciones.length; i++) {
-        let elemento = opciones[i];
 
-        elemento.ontouchstart = function() {
-            console.log("estoy tocando");
-            elemento.classList.add('pulsado');
-        };
+// Función para cambiar la vista del compartimento entre el frigorífico y congelador
+function cambiarVistaCompartimento() {
+    let parrafo    = $('ul>li>a>p'),
+        elemento   = $('ul>li:nth-child(2)>a>p>span'),
+        compActual = parrafo.getAttribute('data-activado'),
+        iconoFrigo = $('ul>li>a>p>span:first-child'),
+        iconoConge = $('ul>li>a>p>span:nth-child(3)');
 
-        elemento.ontouchend = function() {
-            console.log("estoy quitando el dedo");
-            elemento.classList.remove('pulsado');
-        };
-        /*
-        if (i == 0) {
+    if (compActual == 'refrigerador') {
+        parrafo.setAttribute('data-activado', 'congelador');
+        iconoFrigo.classList.add('desactivado');
+        iconoConge.classList.remove('desactivado');
 
-        } else if (i == 1) {
+        // Cambiamos la vista al congelador
+        elemento.classList.remove('icon-fridge');
+        elemento.classList.add('icon-snowflake');
+    } else {
+        parrafo.setAttribute('data-activado', 'refrigerador');
+        iconoConge.classList.add('desactivado');
+        iconoFrigo.classList.remove('desactivado');
 
-        } else if (i == 2) {
-
-        } else if (i == 3) {
-
-        } else if (i == 4) {
-
-        } else if (i == 5) {
-
-        }
+        // Cambiamos la vista al refrigerador
+        elemento.classList.remove('icon-snowflake');
+        elemento.classList.add('icon-fridge');
     }
 }
 
@@ -377,7 +409,6 @@ function opcionesTactiles() {
 
 
 
-// Función para activar las funcionalidades de las opciones de los menús con teclado
-function opcionesConTeclado() {
-    
-}*/
+
+
+// Función para cambiar la temperatur
