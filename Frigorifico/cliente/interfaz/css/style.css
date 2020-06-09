@@ -54,19 +54,37 @@
     animation: fadeIn 1.4s;
 }
 
-.boton {
+.botonAceptar,
+.botonSalir {
     width: 150px;
     height: 50px;
     font-size: 1.2em;
     border: none;
     font-weight: bold;
+}
+
+.botonAceptar:hover,
+.botonSalir:hover {
+    cursor: pointer;
+}
+
+.botonAceptar {
     background-color: #0f0;
 }
 
-.boton:hover {
+.botonAceptar:hover {
     background-color: #4dff4d;
-    cursor: pointer;
 }
+
+.botonSalir {
+    background-color: rgb(235, 235, 235);
+}
+
+.botonSalir:hover {
+    background-color: rgb(163, 163, 163);
+}
+
+
 
 .vistaCompartimento {
     padding: 45px 10px;;

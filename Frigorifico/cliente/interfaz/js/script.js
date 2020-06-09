@@ -33,12 +33,6 @@ frigo.on("connect", function () {
     $('body').onload = function() {
         load();
     }
-
-    // Activar la luz del refrigerador cuando se abre la puerta
- /*   frigo.on("refrigeradorPuerta", function (abierta) {
-        console.log("Puerta:", abierta);
-        frigo.refrigeradorLuz = abierta;
-    });*/
 });
 
 
@@ -55,6 +49,7 @@ function load() {
     let idTemp = setTimeout(function() {
         frigo.on('frigorificoHora', function(fecha) {
             mostrarDatosTiempo(fecha);
+            reloj();
             if ($('#bloqueo output').textContent == '') {
 
                 // Mostramos la temperatura
@@ -63,6 +58,11 @@ function load() {
                 if (grados > 9  ||  grados < -9)
                     $('#bloqueo output').classList.add('ajustaTemp');
                 $('#inicio output').innerHTML  = `${temperatura} <span>º</span>`;
+
+                // Activar la luz del refrigerador cuando se abre la puerta
+                sessionStorage.setItem('luzAutomaticaRefri', 'no');
+                sessionStorage.setItem('luzAutomaticaConge', 'no');
+                funcionalidadLuzAutomatica();
 
                 // Cambiamos a la vista de inicio
                 desbloquearInicio();
@@ -87,6 +87,29 @@ function load() {
         clearTimeout(idTemp2);
     }, tempActualizacion);*/
 }
+
+
+
+
+
+// Función para activar las funcionalidades de la luz automática al abrir la puerta
+function funcionalidadLuzAutomatica() {
+    
+    frigo.on("refrigeradorPuerta", function (abierta) {
+        let luzRefrigerador = sessionStorage.getItem('luzAutomaticaRefri');
+
+        if (luzRefrigerador == 'si')
+            frigo.refrigeradorLuz = abierta;
+    });
+
+    frigo.on("congeladorPuerta", function (abierta) {
+        let luzCongelador = sessionStorage.getItem('luzAutomaticaConge');
+
+        if (luzCongelador == 'si')
+            frigo.congeladorLuz = abierta;
+    });
+}
+
 
 
 
@@ -327,6 +350,15 @@ function funcionalidadesMenuFrigo() {
     let opciones    = $$('li'),
         vistaActual = sessionStorage.getItem('vista');
 
+    // Reloj analógico
+    $('#inicio>header>p>a:nth-child(2)').onclick = function() {
+        if (sessionStorage.getItem('vista') != 'vistaReloj')
+            cambiarVista('vistaReloj');
+        else if (sessionStorage.getItem('vista') == 'vistaReloj')
+            cambiarVista('vistaTemperatura');
+    };
+
+    // Opciones del menú
     for (let i=0; i<opciones.length; i++) {
         let elemento = opciones[i];
 
@@ -383,9 +415,9 @@ function funcionalidadesMenuFrigo() {
             } else if (i == 2) {
                 //cambiarVista();
             } else if (i == 3) {
-                //cambiarVista();
+                modificarTemperatura(1);
             } else if (i == 4) {
-                //cambiarVista();
+                modificarTemperatura(-1);
             } else if (i == 5) {
                 //cambiarVista();
             }
@@ -459,10 +491,8 @@ function funcionalidadesCompartimento() {
         compart   = (vista == '#vistaRefrigerador') ? 'Refrigerador' : 'Congelador',
         marcar    = false;
 
-    if (!marcar)
-        if (valor == 'si')
-            encendido.checked = true;
-/*Atencioooon hacer funcion para recoger los valores del servidor */
+    restablecerInfoCompartimento(vista, compart);
+
     encendido.onclick = function() {
         if (valor == 'no') {
             encendido.checked = true;
@@ -487,10 +517,17 @@ function funcionalidadesCompartimento() {
                 frigo.refrigeradorMotor = 1;
 
             // Luz...
-            if (luz.value == 0)
+            if (luz.value == 0) {
                 frigo.refrigeradorLuz = false;
-            else if (luz.value == 2)
+                sessionStorage.setItem('luzAutomaticaRefri', 'no');
+            } else if (luz.value == 2) {
                 frigo.refrigeradorLuz = true;
+                sessionStorage.setItem('luzAutomaticaRefri', 'no');
+            } else {
+                sessionStorage.setItem('luzAutomaticaRefri', 'si');
+                if (!frigo.refrigeradorLuz)
+                    frigo.refrigeradorLuz = true;
+            }
         } else {
 
             // Motor...
@@ -500,13 +537,112 @@ function funcionalidadesCompartimento() {
                 frigo.congeladorMotor = 1;
 
             // Luz
-            if (luz.value == 0)
+            if (luz.value == 0) {
                 frigo.congeladorLuz = false;
-            else if (luz.value == 2)
+                sessionStorage.setItem('luzAutomaticaConge', 'no');
+            } else if (luz.value == 2) {
                 frigo.congeladorLuz = true;
+                sessionStorage.setItem('luzAutomaticaConge', 'no');
+            } else {
+                sessionStorage.setItem('luzAutomaticaConge', 'si');
+                if (!frigo.congeladorLuz)
+                    frigo.congeladorLuz = true;
+            }
         }
 
         // Volvemos a inicio...
         cambiarVista('vistaTemperatura');
     };
 }
+
+
+
+
+
+
+// Función para restablecer los datos del compartimento en la vista con la información del servidor
+function restablecerInfoCompartimento(vista, compartimento) {
+    let encendido = $(vista + '>div>article:first-child>input[name="encendido"]');
+
+    if (compartimento == 'Refrigerador') {
+        if (frigo.refrigeradorMotor > 0) {
+            encendido.value   = 'si';
+            encendido.checked = true;
+        } else {
+            encendido.value   = 'no';
+            encendido.checked = false;
+        }
+
+        if (sessionStorage.getItem('luzAutomaticaRefri') == 'si') {
+            $(vista + '>div>article:last-child>div:nth-child(3)>input').checked = true;
+        } else {
+            if (frigo.refrigeradorLuz) {
+                $(vista + '>div>article:last-child>div:nth-child(4)>input').checked = true;
+            } else {
+                $(vista + '>div>article:last-child>div:nth-child(2)>input').checked = true;
+            }
+        }
+    } else {
+        if (frigo.congeladorMotor > 0) {
+            encendido.value   = 'si';
+            encendido.checked = true;
+        } else {
+            encendido.value   = 'no';
+            encendido.checked = false;
+        }
+
+        if (sessionStorage.getItem('luzAutomaticaConge') == 'si') {
+            $(vista + '>div>article:last-child>div:nth-child(3)>input').checked = true;
+        } else {
+            if (frigo.congeladorLuz) {
+                $(vista + '>div>article:last-child>div:nth-child(4)>input').checked = true;
+            } else {
+                $(vista + '>div>article:last-child>div:nth-child(2)>input').checked = true;
+            }
+        }
+    }
+
+}
+
+
+
+
+
+
+// Función para añadir el reloj en la vista a modo de reloj de cocina
+function reloj() {
+	time = frigo.frigorificoHora;
+	horas = time.getHours();
+	minutos = time.getMinutes();
+	segundos = time.getSeconds();
+    
+    if (horas >= 12) {
+     	porcentajeHoras = horas / 12 * 360;
+    }  else {
+    	porcentajeHoras = horas / 24 * 360;
+    }
+
+    porcentajeHoras += minutos / 60 * 30;
+    porcentajeMinutos = minutos / 60 * 360;
+    porcentajeSegundos = segundos / 60 * 360;
+
+    document.getElementById("horas").style.transform = "rotate("+ porcentajeHoras +"deg) scale(1.1)";
+    document.getElementById("minutos").style.transform = "rotate("+ porcentajeMinutos +"deg) scale(1.2)";
+    document.getElementById("segundos").style.transform = "rotate("+ porcentajeSegundos +"deg) scale(1.2)";
+    //document.getElementById("p-content").innerHTML = horas + ":" + minutos + ":" + segundos; 
+}
+
+
+
+
+
+/*
+// Función para subir y bajar la temperatura de los distintos compartimentos
+function modificarTemperatura(temp) {
+    let vistaActual = sessionStorage.getItem('vista');
+
+    // Nos aseguramos que estamos en la vista de temperatura
+    if (vistaActual == 'vistaTemperatura') {
+
+    }
+}*/

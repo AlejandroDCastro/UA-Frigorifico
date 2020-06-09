@@ -8,6 +8,7 @@
 	<meta name="description" content="Front-End Proyecto Frigorífico">
 	<meta name="keywords" content="frigorifico, interfaz, usabilidad, accesibilidad">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/estilo.css">
 	<link rel="stylesheet" href="css/fontello.css">
 	<script src="../electro.js"></script>
 	<script src="js/script.js"></script>
@@ -89,7 +90,7 @@
 					<article>
 						<h3>Luz</h3>
 						<div>
-							<input type="radio" name="lucesRefrigerador" id="off1" value="0">
+							<input type="radio" name="lucesRefrigerador" id="off1" value="0" checked>
 							<label for="off1">Apagada</label>
 						</div>
 						<div>
@@ -103,7 +104,7 @@
 					</article>
 				</div>
 				<div>
-					<button class="boton">Aceptar</button>
+					<button class="botonAceptar">Aceptar</button>
 				</div>
 			</div>
 			<div id="vistaCongelador" class="vistaCompartimento ocultar">
@@ -116,7 +117,7 @@
 					<article>
 						<h3>Luz</h3>
 						<div>
-							<input type="radio" name="lucesCongelador" id="off2" value="0">
+							<input type="radio" name="lucesCongelador" id="off2" value="0" checked>
 							<label for="off2">Apagada</label>
 						</div>
 						<div>
@@ -130,7 +131,21 @@
 					</article>
 				</div>
 				<div>
-					<button class="boton">Aceptar</button>
+					<button class="botonAceptar">Aceptar</button>
+				</div>
+			</div>
+			<div id="vistaReloj" class="vistaCompartimento ocultar">
+				<h2>Reloj</h2>
+				<div>
+					<div class="flex">
+						<div class="contenido">
+							<div class="reloj">
+								<img src="img/aguja.png" id="horas" alt="Horas...">
+								<img src="img/agujaMinutos.png" id="minutos" alt="Minutos...">
+								<img src="img/agujaSegundos.png" id="segundos" alt="Segundos...">
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<nav>
