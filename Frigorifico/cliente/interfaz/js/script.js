@@ -1,9 +1,9 @@
 
 // Constantes globales
 const tempFade          = 0.7;   // Tiempo de transición entre vistas
-const tempActualizacion = 800;  // 0.8 milisegundo
+const tempActualizacion = 800;   // 0.8 milisegundo
 const comprobacionesRep = 100;
-const tempInteraccion   = 500000; // 1 minuto
+const tempInteraccion   = 65000; // 1 minuto
 
 
 
@@ -32,7 +32,7 @@ frigo.on("connect", function () {
     // Si se han cargado las vistas...
     $('body').onload = function() {
         load();
-    }
+    };
 });
 
 
@@ -42,10 +42,17 @@ frigo.on("connect", function () {
 
 // Función que se ejecuta al cargarse todos los elementos de la página y el frigorífico
 function load() {
-    let grados = Math.round(frigo.refrigeradorTemperatura);
+    let grados, grados2;
+
+    if (sessionStorage.getItem('tempRefrigerador')) {
+        grados  = sessionStorage.getItem('tempRefrigerador');
+        grados2 = sessionStorage.getItem('tempCongelador');
+    } else {
+        grados  = Math.round(frigo.refrigeradorTemperatura);
+        grados2 = Math.round(frigo.congeladorTemperatura);
+    }
         
     // Mostramos los datos de inicio
-    //setInterval(mostrarDatosTiempo, tempActualizacion);
     let idTemp = setTimeout(function() {
         frigo.on('frigorificoHora', function(fecha) {
             mostrarDatosTiempo(fecha);
@@ -58,11 +65,16 @@ function load() {
                 if (grados > 9  ||  grados < -9)
                     $('#bloqueo output').classList.add('ajustaTemp');
                 $('#inicio output').innerHTML  = `${temperatura} <span>º</span>`;
+                sessionStorage.setItem('tempRefrigerador', grados);
+                sessionStorage.setItem('tempCongelador', grados2);
 
                 // Activar la luz del refrigerador cuando se abre la puerta
                 sessionStorage.setItem('luzAutomaticaRefri', 'no');
                 sessionStorage.setItem('luzAutomaticaConge', 'no');
                 funcionalidadLuzAutomatica();
+
+                // Pantalla atenuada
+                frigo.frigorificoPantalla = 1;
 
                 // Cambiamos a la vista de inicio
                 desbloquearInicio();
@@ -71,21 +83,6 @@ function load() {
         });
         clearTimeout(idTemp);
     }, tempActualizacion);
-    /*
-    let idTemp2 = setTimeout(function() {
-
-        // Mostramos la temperatura
-        temperatura = (grados >= 0) ? ('+' + grados) : ('-' + grados);
-        $('#bloqueo output').innerHTML = `${temperatura}`;
-        if (grados > 9  ||  grados < -9)
-            $('#bloqueo output').classList.add('ajustaTemp');
-        $('#inicio output').innerHTML  = `${temperatura} <span>º</span>`;
-
-        // Cambiamos a la vista de inicio
-        desbloquearInicio();
-
-        clearTimeout(idTemp2);
-    }, tempActualizacion);*/
 }
 
 
@@ -108,6 +105,9 @@ function funcionalidadLuzAutomatica() {
         if (luzCongelador == 'si')
             frigo.congeladorLuz = abierta;
     });
+
+    // Comprobamos si la puerta del refrigerador esta mucho tiempo abierta
+  //  alarmaPuertaAbierta();
 }
 
 
@@ -119,34 +119,23 @@ function funcionalidadLuzAutomatica() {
 function desbloquearInicio() {
     let bloqueo = $('#bloqueo');
 
-    /*
-    let idTemp = setInterval(function() {
-        if (frigo.frigorificoPresencia) {
-            bloqueoYDesbloqueo('bloqueo', 'inicio');
-            clearInterval(idTemp);
-        }
-    }, comprobacionesRep);
-
-    bloqueo.onclick = function() {
-        clearInterval(idTemp);
-        bloqueoYDesbloqueo('bloqueo', 'inicio');
-    };
-
-    bloqueo.ontouchmove = function() {
-        clearInterval(idTemp);
-        bloqueoYDesbloqueo('bloqueo', 'inicio');
-    };*/
-
     frigo.on('frigorificoPresencia', function(presencia) {
-        if (presencia)
+        if (presencia) {
+
+            // Pantalla encendida
+            frigo.frigorificoPantalla = 2;
+
             bloqueoYDesbloqueo('bloqueo', 'inicio');
+        }
     });
 
     bloqueo.onclick = function() {
+        frigo.frigorificoPantalla = 2;
         bloqueoYDesbloqueo('bloqueo', 'inicio');
     };
 
     bloqueo.ontouchmove = function() {
+        frigo.frigorificoPantalla = 2;
         bloqueoYDesbloqueo('bloqueo', 'inicio');
     };
     
@@ -163,6 +152,7 @@ function bloqueoYDesbloqueo(ocultar, mostrar) {
         objMostrar  = $('#' + mostrar);
 
     $('body').setAttribute('data-vista', mostrar);
+   // ponerTemperatura(sessionStorage.getItem('tempRefrigerador'));
     mostrarDatosTiempo(frigo.frigorificoHora);
     desbloquearVista(objOcultar, objMostrar);
 }
@@ -300,7 +290,8 @@ function desbloquearVista(objOcultar, objMostrar) {
         if ($('body').getAttribute('data-vista') == 'inicio') {
 
             // Para localizarnos en la vista actual...
-            sessionStorage.setItem('vista', 'vistaTemperatura');
+            cambiarVista('vistaTemperatura');
+            ponerTemperatura(sessionStorage.getItem('tempRefrigerador'));
             loadInicio();
         }
     }, tempFade);
@@ -321,12 +312,19 @@ function loadInicio() {
     // Una vez desbloqueamos tenemos 1 minuto de inactividad para volver a la pantalla de bloqueo
     let idTemp = setTimeout(function() {
         bloqueoYDesbloqueo('inicio', 'bloqueo');
+        frigo.frigorificoPantalla = 1;
 
         // Si no hay nadie delante se puede volver a desbloquear con presencia...
         if (!frigo.frigorificoPresencia)
             desbloquearInicio();
+
+        // Ajustes de la interfaz de nuevo...
+//        sessionStorage.removeItem('vista');
+        ponerTemperatura(sessionStorage.getItem('tempRefrigerador'));
+        if ($('main>nav>ul:first-child>li:first-child>a>p').getAttribute('data-activado') == 'congelador')
+            cambiarVistaCompartimento();
+
         clearTimeout(idTemp);
-        sessionStorage.removeItem('vista');
     }, tempInteraccion);
 
     // Reseteamos el periodo de interacción con la interfaz
@@ -419,10 +417,14 @@ function funcionalidadesMenuFrigo() {
             } else if (i == 4) {
                 modificarTemperatura(-1);
             } else if (i == 5) {
-                //cambiarVista();
+                cambiarVista('vistaAjustes');
+                cambiarAjustesFrigorifico();
             }
         }
     }
+
+    // Hacemos los cambios necesarios en el frigo...
+    cambiosInternosFrigorifico();
     
 }
 
@@ -447,6 +449,8 @@ function cambiarVistaCompartimento() {
         // Cambiamos la vista al congelador
         elemento.classList.remove('icon-fridge');
         elemento.classList.add('icon-snowflake');
+     //   sessionStorage.setItem('vista', 'vistaCongelador');
+        ponerTemperatura(sessionStorage.getItem('tempCongelador'));
     } else {
         parrafo.setAttribute('data-activado', 'refrigerador');
         iconoConge.classList.add('desactivado');
@@ -455,9 +459,31 @@ function cambiarVistaCompartimento() {
         // Cambiamos la vista al refrigerador
         elemento.classList.remove('icon-snowflake');
         elemento.classList.add('icon-fridge');
+    //    sessionStorage.setItem('vista', 'vistaRefrigerador');
+        ponerTemperatura(sessionStorage.getItem('tempRefrigerador'));
     }
 }
 
+
+
+
+
+// Función para poner la temperatura en la interfaz que se esté visualizando
+function ponerTemperatura(temp) {
+    let grados = parseInt(temp);
+    console.log(temp);
+    console.log(grados);
+
+    temperatura = (grados >= 0) ? ('+' + grados) : (grados);
+    if ($('body').getAttribute('data-vista') == 'inicio') {
+        $('#inicio output').innerHTML = `${temperatura} <span>º</span>`;
+    } else {
+        $('#bloqueo output').innerHTML = `${temperatura}`;
+        if (grados > 9  ||  grados < -9)
+            $('#bloqueo output').classList.add('ajustaTemp');
+    }
+    
+}
 
 
 
@@ -466,13 +492,21 @@ function cambiarVistaCompartimento() {
 
 // Función cambiar de vista
 function cambiarVista(vista) {
-    let vistaAnterior = $('#' + sessionStorage.getItem('vista')),
-        vistaNueva    = $('#' + vista);
 
     if (vista != sessionStorage.getItem('vista')) {
+        let vistaAnterior = $('#' + sessionStorage.getItem('vista')),
+            vistaNueva    = $('#' + vista);
 
+        if (sessionStorage.getItem('vista')) {
+            vistaAnterior.classList.add('ocultar');
+        } else {
+
+            // Cuando arranca por primera vez la interfaz de inicio
+            // Arrancamos motores con ganas
+            frigo.refrigeradorMotor = 2;
+            frigo.congeladorMotor   = 2;
+        }
         sessionStorage.setItem('vista', vista);
-        vistaAnterior.classList.add('ocultar');
         vistaNueva.classList.remove('ocultar');
     }
 }
@@ -488,8 +522,7 @@ function funcionalidadesCompartimento() {
         encendido = $(vista + '>div>article:first-child>input[name="encendido"]'),
         boton     = $(vista + '>div:last-child>button'),
         valor     = encendido.value,
-        compart   = (vista == '#vistaRefrigerador') ? 'Refrigerador' : 'Congelador',
-        marcar    = false;
+        compart   = (vista == '#vistaRefrigerador') ? 'Refrigerador' : 'Congelador';
 
     restablecerInfoCompartimento(vista, compart);
 
@@ -629,20 +662,161 @@ function reloj() {
     document.getElementById("horas").style.transform = "rotate("+ porcentajeHoras +"deg) scale(1.1)";
     document.getElementById("minutos").style.transform = "rotate("+ porcentajeMinutos +"deg) scale(1.2)";
     document.getElementById("segundos").style.transform = "rotate("+ porcentajeSegundos +"deg) scale(1.2)";
-    //document.getElementById("p-content").innerHTML = horas + ":" + minutos + ":" + segundos; 
 }
 
 
 
 
 
-/*
+
 // Función para subir y bajar la temperatura de los distintos compartimentos
 function modificarTemperatura(temp) {
-    let vistaActual = sessionStorage.getItem('vista');
+    let vistaActual   = sessionStorage.getItem('vista');
+        compartimento = $('main>nav>ul:first-child>li:first-child>a>p').getAttribute('data-activado');
 
     // Nos aseguramos que estamos en la vista de temperatura
-    if (vistaActual == 'vistaTemperatura') {
+    if (vistaActual != 'vistaTemperatura') {
+        cambiarVista('vistaTemperatura');
+    } else {
+        let temperatura;
 
+        if (compartimento == 'refrigerador') {
+            temperatura = parseInt(sessionStorage.getItem('tempRefrigerador'));
+            temperatura += parseInt(temp);
+            sessionStorage.setItem('tempRefrigerador', temperatura);
+        } else {
+            temperatura = parseInt(sessionStorage.getItem('tempCongelador'));
+            temperatura += parseInt(temp);
+            sessionStorage.setItem('tempCongelador', temperatura);
+        }
+
+        ponerTemperatura(temperatura);
     }
+}
+
+
+
+
+
+
+// Función para realizar los cambios internos del frigorífico
+function cambiosInternosFrigorifico() {
+
+    frigo.on('refrigeradorTemperatura', function(temp1) {
+        let tempRefrigerador = parseInt(sessionStorage.getItem('tempRefrigerador')),
+            modo = sessionStorage.getItem('modo');
+
+        if (diferenciaTemperaturas(tempRefrigerador, temp1) >= 1.0) {
+            if (tempRefrigerador > temp1) {
+                if (frigo.refrigeradorMotor > 0)
+                    frigo.refrigeradorMotor = 0;
+            } else {
+                if (frigo.refrigeradorMotor == 0) {
+                    if (modo != undefined  &&  modo == 'speed')
+                        frigo.refrigeradorMotor = 2;
+                    else
+                        frigo.refrigeradorMotor = 1;
+                }
+            }
+        }
+        
+    });
+
+    frigo.on('congeladorTemperatura', function(temp2) {
+        let tempCongelador = parseInt(sessionStorage.getItem('tempCongelador')),
+            modo = sessionStorage.getItem('modo');
+        
+        if (diferenciaTemperaturas(tempCongelador, temp2) >= 1.0) {
+            if (tempCongelador > temp2) {
+                if (frigo.congeladorMotor > 0)
+                    frigo.congeladorMotor = 0;
+            } else {
+                if (frigo.congeladorMotor == 0) {
+                    if (modo != undefined  &&  modo == 'speed')
+                        frigo.congeladorMotor = 2;
+                    else
+                        frigo.congeladorMotor = 1;
+                }
+            }
+        }
+    });
+}
+
+
+
+
+
+
+// Función para comprobar la diferencia entre dos temperaturas
+function diferenciaTemperaturas(t1, t2) {
+    let diferencia = 0.0;
+
+    if (t1 >= 0  &&  t2 >= 0) {
+        diferencia = Math.abs(t1 - t2);
+    } else if (t1 >= 0  &&  t2 < 0) {
+        t2         = Math.abs(t2);
+        diferencia = Math.abs(t1 + t2);
+    } else if (t1 < 0  &&  t2 >= 0) {
+        t1         = Math.abs(t1);
+        diferencia = Math.abs(t1 + t2);
+    } else {
+        diferencia = Math.abs(t1 - t2);
+    }
+
+    return diferencia;
+}
+
+
+
+
+
+// Función para abrir los ajustes del frigorífico
+function cambiarAjustesFrigorifico() {
+    let estilo  = $('#vistaAjustes>div>article:first-child>input'),
+        aceptar = $('#vistaAjustes>div:last-child');
+
+    estilo.onclick = function() {
+        let valor = estilo.value;
+    
+        if (valor == 'no') {
+            estilo.checked = true;
+            estilo.value   = 'si';
+
+            // Lo hacemos un poco más accesible
+            $('html').style.setProperty('--border-color', "#ff0");
+            $('html').style.setProperty('--activated-color', "#ff0");
+            $('html').style.setProperty('--activated-opacity', "1.0");
+        } else {
+
+            estilo.checked = false;
+            estilo.value   = 'no';
+            $('html').style.setProperty('--border-color', "#0f0f0f");
+            $('html').style.setProperty('--activated-color', "#fff");
+            $('html').style.setProperty('--activated-opacity', ".3");
+        }
+    };
+
+
+    aceptar.onclick = function() {
+        let modo = $('#vistaAjustes>div:nth-child(2)>article>div>input:checked');
+
+        if (modo != undefined) {
+            console.log(modo.value);
+            sessionStorage.setItem('modo', modo.value);
+        }
+
+        cambiarVista('vistaTemperatura');
+    };
+}
+
+
+
+/*
+
+// Función para encender la puerta si la alarma está demasiado tiempo abierta
+function alarmaPuertaAbierta() {
+    let tempRefrigerador = sessionStorage.getItem('tempRefrigerador'),
+        tempCongelador   = sessionStorage.getItem('tempCongelador');
+    
+    if (tempRefrigerador !=)
 }*/

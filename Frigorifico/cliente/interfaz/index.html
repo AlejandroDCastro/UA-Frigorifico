@@ -148,6 +148,44 @@
 					</div>
 				</div>
 			</div>
+			<div id="vistaAjustes" class="vistaCompartimento ocultar">
+				<h2>Ajustes de Frigorífico</h2>
+				<div>
+					<article>
+						<h3>Estilo Accesible</h3>
+						<input type="radio" name="accesible" value="no">
+					</article>
+					<article>
+						<h3>Modos</h3>
+						<div>
+							<input type="radio" name="modos" id="normal" value="normal">
+							<label for="normal">Normal</label>
+						</div>
+						<div>
+							<input type="radio" name="modos" id="eco" value="eco">
+							<label for="eco">ECO</label>
+						</div>
+						<div>
+							<input type="radio" name="modos" id="speed" value="speed">
+							<label for="speed">SPEED</label>
+						</div>
+					</article>
+					<article>
+						<h3>Idioma</h3>
+						<input list="countries" id="country" placeholder="Español" required>
+						<datalist id="countries">
+							<option value="Español" selected></option>
+							<option value="Inglés"></option>
+							<option value="Francés"></option>
+							<option value="Italiano"></option>
+							<option value="Chino"></option>
+						</datalist>
+					</article>
+				</div>
+				<div>
+					<button class="botonAceptar">Aceptar</button>
+				</div>
+			</div>
 			<nav>
 				<ul>
 					<li>

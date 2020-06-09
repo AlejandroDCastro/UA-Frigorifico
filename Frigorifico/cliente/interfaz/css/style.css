@@ -11,6 +11,8 @@
     --background-color: #181818;
     --border-color: #0f0f0f;
     --main-color: #fff;
+    --activated-color: #fff;
+    --activated-opacity: .3;
 }
 
 * {
@@ -32,7 +34,8 @@
 }
 
 .desactivado {
-    opacity: 0.3;
+    opacity: var(--activated-opacity);
+    color: var(--activated-color);
 }
 
 .ajustaTemp {
@@ -361,7 +364,16 @@ body {
 
 
 
-/*Pantalla de los distintos pop-up*/
+/*Vista de ajustes del frigorifico*/
+
+#vistaAjustes>div {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#country {
+    transform: scale(1.5);
+}
 
 
 
