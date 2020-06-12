@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Author" content="Alejandro Castro Valero">
+	<meta name="Author" content="Alejandro Chica Gutiérrez">
+	<meta name="description" content="Front-End Proyecto Frigorífico">
+	<meta name="keywords" content="frigorifico, interfaz, usabilidad, accesibilidad">
+	<link rel="stylesheet" media="(min-width: 961px)" href="css/style.css">
+	<link rel="stylesheet" media="(max-width: 960px)" href="css/responsive.css" />
+	<link rel="stylesheet" href="css/estilo.css">
+	<link rel="stylesheet" href="css/fontello.css">
+	<script src="../electro.js"></script>
+	<script src="js/script.js"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<title>Interfaz de Frigorífico</title>
+</head>
+<body data-vista="bloqueo">
+	<div id="bloqueo">
+		<div>
+			<h2>
+				<a href="#">
+					<img src="img/logotipo.png" alt="Logotipo empresa española">
+				</a>
+			</h2>
+			<div>
+				<div>
+					<time id="hora" datetime="08:30" data-aparece="si"></time>
+					<time id="fecha" datetime="1914-12-20"></time>
+				</div>
+				<div>
+					<span>
+						<output id="tempFrigo"><img src="img/loading.gif" alt="Animación de carga"></output>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="inicio" class="ocultar">
+		<header>
+			<p>
+				<a href="#">
+					<span class="icon-bell"></span>
+				</a>
+				<a href="#">
+					<time datetime="08:30" data-aparece="si"></time>
+				</a>
+				<time datetime="1914-12-20"></time>
+			</p>
+		</header>
+		<main>
+			<nav>
+				<ul>
+					<li>
+						<a href="#">
+							<p data-activado="refrigerador">
+								<span class="icon-fridge"></span>
+								<span class="icon-exchange desactivado"></span>
+								<span class="icon-snowflake desactivado"></span>
+							</p>
+							<p class="ocultar">Cambio</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<p>
+								<span class="icon-fridge"></span>
+							</p>
+							<p class="ocultar">Refrigerador</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<p>
+								<span class="icon-basket"></span>
+							</p>
+							<p class="ocultar">Pedido</p>
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<div id="vistaTemperatura">
+				<p>
+					<output>+4 <span>º</span></output>
+				</p>
+			</div>
+			<div id="vistaRefrigerador" class="vistaCompartimento ocultar">
+				<h2>Opciones de Refrigerador</h2>
+				<div>
+					<article>
+						<h3>Encendido</h3>
+						<input type="radio" name="encendido" value="no">
+					</article>
+					<article>
+						<h3>Luz</h3>
+						<div>
+							<input type="radio" name="lucesRefrigerador" id="off1" value="0" checked>
+							<label for="off1">Apagada</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesRefrigerador" id="auto1" value="1">
+							<label for="auto1">Automática</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesRefrigerador" id="on1" value="2">
+							<label for="on1">Encendida</label>
+						</div>
+					</article>
+				</div>
+				<div>
+					<button class="botonAceptar">Aceptar</button>
+				</div>
+			</div>
+			<div id="vistaCongelador" class="vistaCompartimento ocultar">
+				<h2>Opciones de Congelador</h2>
+				<div>
+					<article>
+						<h3>Encendido</h3>
+						<input type="radio" name="encendido" value="no">
+					</article>
+					<article>
+						<h3>Luz</h3>
+						<div>
+							<input type="radio" name="lucesCongelador" id="off2" value="0" checked>
+							<label for="off2">Apagada</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesCongelador" id="auto2" value="1">
+							<label for="auto2">Automática</label>
+						</div>
+						<div>
+							<input type="radio" name="lucesCongelador" id="on2" value="2">
+							<label for="on2">Encendida</label>
+						</div>
+					</article>
+				</div>
+				<div>
+					<button class="botonAceptar">Aceptar</button>
+				</div>
+			</div>
+			<div id="vistaReloj" class="vistaCompartimento ocultar">
+				<h2>Reloj</h2>
+				<div>
+					<div class="flex">
+						<div class="contenido">
+							<div class="reloj">
+								<img src="img/aguja.png" id="horas" alt="Horas...">
+								<img src="img/agujaMinutos.png" id="minutos" alt="Minutos...">
+								<img src="img/agujaSegundos.png" id="segundos" alt="Segundos...">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="vistaCompra" class="vistaCompartimento ocultar">
+				<h2>Lista de la Compra</h2>
+				<div>
+					<!-- CONTENIDO COMPRA -->
+					<div class="lista">
+						<button  onclick="realizarPedido();" class="botonAceptar">Hacer Pedido</button>
+					</div>
+				</div>
+			</div>
+			<div id="vistaPedido" class="vistaCompartimento ocultar">
+
+			</div>
+			<div id="vistaAlarma" class="vistaCompartimento ocultar">
+				<h2>Alarma inactiva</h2>
+				<p>Frigorífico funcionando correctamente.</p>
+				<div>
+					<button class="botonAceptar">Aceptar</button>
+				</div>
+			</div>
+			<div id="vistaAjustes" class="vistaCompartimento ocultar">
+				<h2>Ajustes de Frigorífico</h2>
+				<div>
+					<article>
+						<h3>Estilo Adicional</h3>
+						<input type="radio" name="accesible" value="no">
+					</article>
+					<article id="modos">
+						<h3>Modos</h3>
+						<div>
+							<input type="radio" name="modos" id="normal" value="normal" checked>
+							<label for="normal">Normal</label>
+						</div>
+						<div>
+							<input type="radio" name="modos" id="eco" value="eco">
+							<label for="eco">ECO</label>
+						</div>
+						<div>
+							<input type="radio" name="modos" id="speed" value="speed">
+							<label for="speed">SPEED</label>
+						</div>
+					</article>
+					<article>
+						<h3>Idioma</h3>
+						<input list="countries" id="country" placeholder="Español" required>
+						<datalist id="countries">
+							<option value="Español" selected></option>
+							<option value="Inglés"></option>
+							<option value="Francés"></option>
+							<option value="Italiano"></option>
+							<option value="Chino"></option>
+						</datalist>
+					</article>
+					<div id="historiales">
+						<button onclick="mostrarConsumo();" class="btn-historial">Historial Consumo</button>
+						<button onclick="mostrarTemperatura();" class="btn-historial">Historial Temperatura</button>
+					</div>
+				</div>
+				<div>
+					<button class="botonAceptar">Aceptar</button>
+				</div>
+			</div>
+			<!-- VISTAS PARA LOS HISTORIALES -->
+			<div id="h-consumo" class="vistaCompartimento ocultar">
+				<h3 id="titulo-consumo">Consumo medio/mes</h3>
+				<div id="grafico-consumo"></div>
+				<button  onclick="cambiarVista('vistaAjustes');" class="botonAceptar">Aceptar</button>
+				<!--<button id="btn-consumo" onclick="mostrarConsumo();">Historial Consumo</button>
+				<button id="btn-consumo-volver" class="ocultar" onclick="atrasConsumo();">Atrás</button>-->
+			</div>
+			<div id="h-temperatura" class="vistaCompartimento ocultar">
+				<h3 id="titulo-temperatura">Temperatura media/mes</h3>
+				<div id="grafico-temperatura"></div>
+				<button  onclick="cambiarVista('vistaAjustes');" class="botonAceptar">Aceptar</button>
+				<!--<button id="btn-temperatura" onclick="mostrarTemperatura();">Historial Temperatura</button>
+				<button id="btn-temperatura-volver" class="ocultar" onclick="atrasTemperatura();">Atrás</button>-->
+			</div>
+			<nav>
+				<ul>
+					<li>
+						<a href="#">
+							<p>
+								<span class="icon-plus"></span>
+							</p>
+							<p class="ocultar">Subir grados</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<p>
+								<span class="icon-minus"></span>
+							</p>
+							<p class="ocultar">Bajar grados</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<p>
+								<span class="icon-cog"></span>
+							</p>
+							<p class="ocultar">Ajustes</p>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</main>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+</html>
