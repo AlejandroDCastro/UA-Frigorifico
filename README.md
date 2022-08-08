@@ -1,6 +1,6 @@
 # UA-Frigorifico
 Proyecto de la asignatura de *Usabilidad y Accesibilidad*.
-
+<br>
 Desarrollo de un front-end para frigoríficos centrado en la usabilidad y accesibilidad de la interfaz, con el uso de estándares web **HTML**, **CSS** y **JavaScript**.
 
 ***
