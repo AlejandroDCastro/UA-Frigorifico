@@ -12,12 +12,13 @@ Desarrollo de un front-end para frigoríficos centrado en la usabilidad y accesi
 ***
 
 ## Screenshots
-![Pantalla de bloqueo](https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/lockscreen.png "Pantalla de bloqueo")
 
-![Temperatura de refrigerador](https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic1.png "Temperatura de refrigerador")
+<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/lockscreen.png" alt="Pantalla de bloqueo" width="800">
 
-![Opciones de refrigerador](https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic2.png "Opciones de refrigerador")
+<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic1.png" alt="Temperatura de refrigerador" width="800">
 
-![Ajustes del frigorífico](https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic4.png "Ajustes del frigorífico")
+<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic2.png" alt="Opciones de refrigerador" width="800">
 
-![Hacer pedido](https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic6.png "Hacer pedido")
+<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic4.png" alt="Ajustes del frigorífico" width="800">
+
+<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic6.png" alt="Hacer pedido" width="800">
