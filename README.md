@@ -13,7 +13,7 @@ Desarrollo de un front-end para frigoríficos centrado en la usabilidad y accesi
 
 ## Screenshots
 
-<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/lockscreen.png" alt="Pantalla de bloqueo" width="800">
+<img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/lockscreen.png" alt="Pantalla de bloqueo" width="700">
 
 <img src="https://github.com/AlejandroDCastro/UA-Frigorifico/blob/master/Frigorifico/pics/pic1.png" alt="Temperatura de refrigerador" width="800">
 
